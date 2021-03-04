@@ -1,0 +1,90 @@
+﻿@model IPagedList<PujcovnaKnih.Models.BookModel>
+
+@{
+    ViewBag.Title = "ViewBooks";
+}
+
+@{ string[] condition = { "Půjčená", "K dispozici", "Žádost o půjčení", "Žádost o vrácení" }; }
+
+@using PagedList.Mvc;
+@using PagedList;
+
+<h2>Seznam knih</h2>
+
+<p>
+    @Html.ActionLink("Přidat knihu", "AddBook")
+</p>
+
+<p>
+    @using (Html.BeginForm("ViewBooks","Home", FormMethod.Get))
+    {
+        @Html.TextBox("search","", new { placeholder = "Zadejte název knihy"})
+        <input type="submit" name="submit" value="Hledat" />
+    }
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().BookId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().PricePerDay)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.First().Availability)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerDay)
+            </td>
+
+            <td>
+                @condition[item.Availability]
+
+                @if (item.Availability == 1)
+                {
+                    <img src="~/Content/image/success.png" class="img-success" />
+                }
+            </td>
+
+            @if (item.Availability == 1)
+            {
+                <td>
+                    @Html.ActionLink("Půjčit", "Rent", new { id = item.Id })
+                </td>
+            }
+            else
+            {
+                <td></td>
+            }
+           
+        </tr>
+
+    }
+
+</table>
+
+@Html.PagedListPager(Model,i => Url.Action("ViewBooks","Home", new { i, search = Request.QueryString["search"]}))
