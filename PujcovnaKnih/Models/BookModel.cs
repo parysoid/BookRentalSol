@@ -11,7 +11,6 @@ namespace PujcovnaKnih.Models
         public int Id { get; set; }
 
         [Display(Name = "Kniha ID")]
-        //[Range(100000, 999999, ErrorMessage = "Chybně vyplněné ID knihy.")]
         public int BookId { get; set; }
 
         [Display(Name = "Název knihy")]

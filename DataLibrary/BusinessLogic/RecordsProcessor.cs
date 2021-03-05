@@ -43,7 +43,6 @@ namespace DataLibrary.BusinessLogic
                            SET RentEnd = @RentEnd
                            WHERE BookId = @BookId;";
 
-
             /* nastevení knihy zpět do stavu volná */
             SetAvailability(bookId, 1);
 

@@ -13,7 +13,7 @@ namespace PujcovnaKnih.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult ViewBooks(int? i, string search)
+        public ActionResult ViewBooks(int? page, string search)
         {
             ViewBag.Message = "Seznam knih";
 
@@ -33,7 +33,7 @@ namespace PujcovnaKnih.Controllers
                 }); ;
             }
 
-            return View(books.Where(x => x.Title.Contains(search ?? "") || search == null).ToPagedList(i ?? 1, 10));
+            return View(books.Where(book => book.Title.Contains(search ?? "") || search == null).ToPagedList(page ?? 1, 10));
         }
 
         public ActionResult AddBook()
@@ -60,7 +60,7 @@ namespace PujcovnaKnih.Controllers
             return View();
         }
 
-        public ActionResult ViewRentedBooks(int? i, string search)
+        public ActionResult ViewRentedBooks(int? page, string search)
         {
             ViewBag.Message = "Seznam půjčených knih";
 
@@ -80,11 +80,12 @@ namespace PujcovnaKnih.Controllers
                 });
             }
 
-            return View(books.Where(x => x.Title.Contains(search ?? "") || search == null).ToPagedList(i ?? 1, 10));
+            return View(books.Where(book => book.Title.Contains(search ?? "") || search == null).ToPagedList(page ?? 1, 10));
         }
 
         public ActionResult Rent(int id)
         {
+            /* Nastavení stavu knihy na - žádost o půjčení */
             int recordsUpdated = SetAvailability(id,2);
 
             return RedirectToAction("ViewBooks");
@@ -93,7 +94,7 @@ namespace PujcovnaKnih.Controllers
 
         public ActionResult Return(int id)
         {
-            /* Nastavení stavu knihy na žádost o vrácení */
+            /* Nastavení stavu knihy na - žádost o vrácení */
             int recordsUpdated = SetAvailability(id,3);
 
             return RedirectToAction("ViewRentedBooks");

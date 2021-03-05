@@ -16,6 +16,5 @@ namespace DataLibrary.Models
         public string RentEnd { get; set; }
         public int Invoiced { get; set; }
         public string InvoicedDate { get; set; }
-
     }
 }
